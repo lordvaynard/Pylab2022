@@ -1,0 +1,81 @@
+.wrapper {
+    margin-top: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    
+    width: 80vw;
+    background: #fff;
+    box-shadow: 4px 4px 10px rgba(0,0,0,.3);
+}
+
+
+.titulo{
+    display: inline;
+}
+
+.btn-nova-empresa{
+    float: right;
+    text-decoration: none;
+    color: white;
+    background-color: #7D2948;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.btn-nova-empresa:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #631f38;
+}
+
+.btn-excluir:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #631f38;
+}
+
+.header-box{
+
+    padding: 30px;
+
+}
+
+.borda-box{
+    border-top: 1px solid black;
+}
+
+.body-box{
+    padding: 30px;
+}
+
+.btn-orange{
+
+    background-color: #ED8554;
+    color: white;
+}
+
+
+.tabela{
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.tabela-linha{
+    background-color: #EDE6E6;
+}
+
+.btn-excluir{
+    text-decoration: none;
+    color: white;
+    background-color: #7D2948;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}

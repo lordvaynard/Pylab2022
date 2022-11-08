@@ -1,0 +1,46 @@
+.wrapper {
+    margin-top: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    padding: 30px;
+    width: 40vw;
+    background: #fff;
+    box-shadow: 4px 4px 10px rgba(0,0,0,.3);
+}
+
+.header{
+    border-bottom: 1px solid black;
+}
+
+.titulo{
+
+    color: #7D2948;
+}
+
+.body-box{
+    margin-top: 20px;
+}
+
+.btn-orange{
+
+    background-color: #ED8554;
+    color: white;
+}
+
+.btn-orange:hover{
+
+    background-color: #be6136;
+    color: white;
+}
+
+@media (max-width: 1000px)
+{
+    .box{
+        width: 80vw;
+    }
+}

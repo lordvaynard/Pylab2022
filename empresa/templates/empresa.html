@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load filtros %}
+
+{% block 'head' %}
+    <link href="{% static 'empresa/css/empresa.css' %}" rel="stylesheet">
+{% endblock%}
+
+{% block 'body' %}
+    <div class="wrapper">
+        <div class="box"> 
+            <div class="header-box">
+                {% if messages %}
+                    {% for message in messages %}
+                        <section class="alert {{message.tags}}">
+                            {{message}}
+                        </section>
+                    {% endfor %}
+                {% endif %}
+                <h2 class="titulo">Gerenciar empresas</h2>
+                <a href="{% url 'nova_empresa' %}" class="btn-nova-empresa">Nova empresa</a>
+            </div>
+            <div class="borda-box"></div>
+            <div class="body-box">
+            
+                <form>
+                <div class="row">
+                    
+                        <div class="col-md-5">
+                            <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+                        </div>
+
+                        <div class="col-md-4">
+                            <select class="form-select" name="tecnologias">
+                                <option value="">--------</option>
+                            </select>
+                        </div>
+                    
+                    <div class="col-md-3">
+                        <input type="submit" value="FILTRAR" class="btn btn-lg btn-orange">
+                    </div>
+                </div>
+                </form>
+
+                <table class="tabela">
+                    <caption>Tabela de Empresas</caption>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Endereço</th>
+                        <th>Tecnologias usadas</th>
+                        <th>Quantidade de vagas</th>
+                        <th>Ação</th>
+                    </tr>
+
+                        {% for empresa in empresas %}
+                            <tr {% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}>
+                                <td>{{empresa.nome}}</td><!-- Cria função(filter) para validar se é par -->
+                                <td>{{empresa.endereco}}</td>
+                                <td>
+                                    <select class="form-select">       
+                                        {% for tech in empresa.tecnologias.all %}
+                                            <option>{{tech}}</option>    
+                                        {% endfor %}                
+                                    </select>
+                                </td>
+                                <td>
+                                    Quantidade de vagas
+                                </td>
+                                <td>
+                                    <a href="{% url 'excluir_empresa' empresa.id %}" class="btn-excluir">Excluir empresa</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    
+                </table>
+            </div>
+
+
+            
+
+        </div>
+    </div>
+
+{% endblock%}
