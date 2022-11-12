@@ -53,6 +53,21 @@ class Vagas(models.Model):
     tecnologias_dominadas = models.ManyToManyField(Tecnologias)
     tecnologias_estudar = models.ManyToManyField(Tecnologias, related_name='estudar')
 
-
+    def progresso(self):
+        x = [((i+1)*20,j[0]) for i, j in enumerate(self.choices_status)]
+        x = list(filter(lambda x: x[1] == self.status, x))[0][0]
+        return x        
+        
+        # if self.status =="I":
+        #     return 20
+        # elif self.status == "C":
+        #     return 40
+        # elif self.status == "E":
+        #     return 60
+        # elif self.status == "D":
+        #     return 80
+        # elif self.status == "F":
+        #     return 100
+        
     def __str__(self):
         return self.titulo

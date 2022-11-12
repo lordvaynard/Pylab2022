@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+    <link rel="stylesheet" href="{% static 'vaga/css/vaga.css' %}"> 
+{% endblock %}
+
+{% block 'body' %}
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <br>
+                <section class="alert {{message.tags}}">
+                    {{message}}
+                </section>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <h3 class="titulo">{{vaga.titulo}}</h3>
+        <p class="titulo2">{{vaga.empresa}}</p>
+        <p>Progresso atual</p>
+        
+        <div style="width: 40%" class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{vaga.progresso}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+
+    <div class="bg2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <p class="titulo2">Crie uma tarefa</p>
+                    <p>Lembre-se de realizar todas suas tarefas com antecedência</p>
+
+
+                    <form action="{% url 'nova_tarefa' vaga.id %}" method="POST"> {% csrf_token %}
+                        <label>Título:</label>
+                        <input name="titulo" type="text" class="form-control input-tarefa" placeholder="Digite o título da tarefa..."> 
+                        <br>
+                        <label>Prioridade:</label>
+                        <select name="prioridade" class="form-select input-tarefa">
+                            <option value="U">Urgente</option>
+                            <option value="A">Alta</option>
+                            <option value="B">Baixa</option>
+                        </select>
+                        <br>
+                        <label>Data:</label>
+                        <input name="data" type="date" class="form-control input-tarefa" placeholder=""> 
+                        <br>
+                        <input type="submit" value="Nova tarefa" class="btn btn-orange">
+
+                    </form>
+
+                </div>
+
+                <div class="col-md">
+                    
+                    {% for tarefa in tarefas %}
+                        <div class="li-tarefa">
+                            <label>{{tarefa.titulo}}</label>
+                            <label class="prioridade-bloco">
+                                {{tarefa.icon}}
+                                {{tarefa.get_prioridade_display}}
+                            </label>
+                            <label class="prioridade-bloco">
+                                {{tarefa.data}}
+                            </label>
+                            <label class="prioridade-bloco">
+                                <a href="{% url 'realizar_tarefa' tarefa.id %}" class="btn btn-success">Finalizado</a>
+                            </label>
+                    
+                        </div>
+                    {% endfor %}
+                    
+                        
+
+                        
+
+                    
+                    
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container bg3">
+        <div class="row">
+
+            <div class="col-md">
+                <p class="titulo2">Enviar E-mail</p>
+                <p>Envie e-mails para essa vaga por aqui.</p>
+            </div>
+
+            <div class="col-md">
+                <form action="{% url 'envia_email' vaga.id %}" method="POST"> {% csrf_token %}
+                    <label>Assunto:</label>
+                    <input name="assunto" type="text" class="form-control" placeholder="assunto">
+                    <br>
+                    <label>Corpo do email:</label>
+                    <textarea name="corpo" class="form-control"></textarea>
+                    <br>
+                    <input type="submit" class="btn btn-orange" value="Enviar">
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="bg2">
+        <div class="container">
+            <div class="row"> 
+                <h3 class="titulo">Histórico de e-mails</h3>
+                
+                {% for email in emails %}
+                    <div class="col-md">
+                
+                        <div class="box-email">
+                            <div class="header-email">
+                                {{email.assunto}}
+                            </div>
+                
+                            <div class="body-email">
+                                {{email.corpo}}
+                            </div>
+                            
+                        </div>
+                
+                    </div>
+                {% endfor %}
+                
+                
+                  
+            </div> 
+            
+                    
+        </div>
+    </div>
+
+    <div class="container bg3">
+        <div class="row">
+            <div class="col-md">
+                <p class="titulo2">Tecnologias que domino</p>
+
+                <div class="li-tech">
+                    Python
+
+                    <svg class="arrow-right" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
+                </div>
+
+            </div>
+
+            <div class="col-md">
+                <p class="titulo2">Preciso estudar</p>
+
+                <div class="li-tech">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                    Python
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
