@@ -27,7 +27,7 @@ SECRET_KEY = 'SECRET_DJANGO'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 
 # Application definition
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'empresa',
-    'vagas'
+    'vagas',
+    'index',
 ]
 
 MIDDLEWARE = [
