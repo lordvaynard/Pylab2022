@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'head' %}
+    <link href="{% static 'empresa/css/empresa_id.css' %}" rel="stylesheet">
+{% endblock%}
+
+
+{% block 'body' %}
+
+    
+    <br>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <br>
+                <section class="alert {{message.tags}}">
+                    {{message}}
+                </section>
+            {% endfor %}
+        {% endif %}    
+        <div class="row">
+            <div class="col-md-3">
+                <img alt="Logo Empresa" width="100%" src="{{empresa.logo.url}}">
+            </div>
+
+            <div class="col-md">
+                <h1 class="titulo">{{empresa.nome}}</h1>
+                <p class="paragrafo">{{empresa.endereco}}</p>
+            </div>
+
+
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <label>Nicho de mercado:</label>
+                <input disabled type="text" class="form-control" value={{empresa.get_nicho_mercado_display}}> <!-- convertendo o nome do combo-->
+            </div>
+
+            <div class="col-md-3">
+                <label>Tecnologias usadas:</label>
+                <select class="form-select">   
+                    {% for tech in empresa.tecnologias.all %}
+                       <option>{{tech}}</option>
+                    {% endfor %}
+                </select>
+                
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-7">
+                <label>Características da empresa:</label>
+                <textarea disabled class="form-control">{{empresa.caracteristicas_empresa}}</textarea>
+            </div>
+
+            <div class="col-md-3">
+                
+                
+            </div>
+        </div>
+
+        <hr>
+
+        <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-lg btn-orange">Nova vaga</a>
+        
+        <div class="row">
+            {% for vaga in vagas %}
+                <div class="col-md">
+            
+                <div class="box-vagas">
+                    <div class="header-vagas">
+                        {{vaga.titulo}}
+                    </div>
+            
+                    <div class="body-vagas">
+                        <div class="row">
+                            <div class="col-md">
+                                <label class="paragrafo">Nível:</label>
+                                <br>        
+                                <label class="paragrafo paragrafo-orange">{{vaga.get_nivel_experiencia_display}}</label>                           
+                            </div>
+            
+                            <div class="col-md">
+                                <label class="paragrafo">Status <img alt="Imagem Empresa" src="{% static 'empresa/img/flag_green.png' %}"></label>
+                                <br>        
+                                <label class="paragrafo paragrafo-orange">{{vaga.get_status_display}}</label>                           
+                            </div>
+            
+                        </div>
+                    </div>
+                    
+                </div>
+                    
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <br>
+    <br>
+
+
+    <div class="modal fade modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 style="font-size: 30px" class="modal-title titulo" id="exampleModalLabel">Nova vaga</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'nova_vaga' %}" method="POST"> {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Título:</label>
+                            <input type="text" name="titulo" class="form-control" placeholder="Digite o título da vaga...">
+                        </div>
+
+                        <div class="col-md">
+                            <label>Email:</label>
+                            <input type="email" name="email" class="form-control" placeholder="email@email.com.br">
+                        </div>
+                        
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Tecnologias que já domino:</label>
+                            <select name="tecnologias_domina" class="form-select" multiple>
+                                {% for tech in tecnologias %}
+                                    <option value="{{tech.id}}">{{tech}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <div class="col-md">
+                            <label>Tecnologias que não domino:</label>
+                            <select name="tecnologias_nao_domina" class="form-select" multiple>
+                                {% for tech in tecnologias %}
+                                    <option value="{{tech.id}}">{{tech}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Nível de experiência:</label>
+                            <select name="experiencia" class="form-select">
+                                <option value="J">Júnior</option>
+                                <option value="P">Pleno</option>
+                                <option value="S">Sênior</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md">
+                            <label>Data final:</label>
+                            <input type="date" class="form-control" name="data_final"> 
+                            
+                        </div>
+                        
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Empresa:</label>
+                            <select name="empresa" class="form-select">
+                                {% for empresa_iter in empresas %}
+                                    <option {% if empresa.id == empresa_iter.id %}selected{% endif %} value="{{empresa_iter.id}}">{{empresa_iter}}</option>
+                                {% endfor %}                                                                               
+                            </select>
+                        </div>
+       
+                    </div>
+
+                    <br>
+                    <div class="row">
+                        <div class="col-md">
+                            <label>Status:</label>
+                            <select name="status" class="form-select">     
+                                <option value="I">Interesse</option>
+                                <option value="C">Currículo enviado</option>    
+                                <option value="E">Entrevista</option>    
+                                <option value="D">Desafio técnico</option>    
+                                <option value="F">Finalizado</option>          
+                            </select>
+                        </div>
+       
+                    </div>
+                    <br>
+                    <input type="submit" value="Nova empresa" class="btn btn-lg btn-orange">
+
+                </form>
+            </div>
+           
+            </div>
+        </div>
+    </div>    
+{% endblock %}

@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.messages import constants
-from .models import Tecnologias, Empresa
+from .models import Tecnologias, Empresa, Vagas
 
 
 def nova_empresa(request):
@@ -50,13 +50,33 @@ def nova_empresa(request):
         messages.add_message(request, constants.SUCCESS, 'Empresa cadastrada com sucesso')
         return redirect(url_atual)        
 
-def empresa(request):
+def empresas(request):
+    tecnologias_filtrar = request.GET.get('tecnologias')
+    nome_filtrar = request.GET.get('nome')
     empresas = Empresa.objects.all() #select de todas empresas cadastradas
-    return render(request, 'empresa.html', {'empresas': empresas}) #passando o resultado do select como parametro para o template
+        
+    if tecnologias_filtrar:
+        empresas = empresas.filter(tecnologias=tecnologias_filtrar)
+    
+    if nome_filtrar:
+        empresas = empresas.filter(nome__icontains=nome_filtrar)
+
+    tecnologias_list = Tecnologias.objects.all() #Select de todas tecnologias
+    return render(request, 'empresa.html', {'empresas': empresas, 'tecnologias': tecnologias_list}) #passando o resultado do select como parametro para o template
 
 def excluir_empresa(request, id):
     url_atual = '/home/empresa'
     empresa = Empresa.objects.get(id=id)
     empresa.delete()
     messages.add_message(request, constants.SUCCESS, 'Empresa excluida com sucesso')
-    return redirect(url_atual)  
+    return redirect(url_atual) 
+
+def empresa(request, id):
+    empresa_id = get_object_or_404(Empresa, id=id) #busca na model empresa id recebido no parametro
+    empresas = Empresa.objects.all()
+    tecnologias = Tecnologias.objects.all()
+    vagas = Vagas.objects.filter(empresa_id = id)
+    return render(request, 'empresa_home.html',{'empresa': empresa_id, 
+                                                'tecnologias':tecnologias, 
+                                                'empresas': empresas,
+                                                'vagas': vagas})

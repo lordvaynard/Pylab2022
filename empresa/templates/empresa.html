@@ -24,7 +24,7 @@
             <div class="borda-box"></div>
             <div class="body-box">
             
-                <form>
+                <form action="{% url 'empresa' %}" method="GET"> {% csrf_token %}
                 <div class="row">
                     
                         <div class="col-md-5">
@@ -33,7 +33,9 @@
 
                         <div class="col-md-4">
                             <select class="form-select" name="tecnologias">
-                                <option value="">--------</option>
+                                {% for tech in tecnologias%}
+                                    <option value="{{tech.id}}">{{tech}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     
@@ -55,7 +57,11 @@
 
                         {% for empresa in empresas %}
                             <tr {% if not forloop.counter|is_par %} class="tabela-linha" {% endif %}>
-                                <td>{{empresa.nome}}</td><!-- Cria função(filter) para validar se é par -->
+                                <td>
+                                    <a href="{% url 'empresa_home' empresa.id %}">
+                                        {{empresa.nome}}
+                                    </a>
+                                </td><!-- Cria função(filter) para validar se é par -->
                                 <td>{{empresa.endereco}}</td>
                                 <td>
                                     <select class="form-select">       
@@ -65,7 +71,12 @@
                                     </select>
                                 </td>
                                 <td>
-                                    Quantidade de vagas
+                                    {% if empresa.qtd_vagas > 0 %}
+                                    <img alt="Flag Verde" src="{% static '/empresa/img/flag_green.png' %}">
+                                    {% else %}
+                                    <img  alt="Flag Vermelha" src="{% static '/empresa/img/flag_red.png' %}">
+                                    {% endif %}
+                                    {{empresa.qtd_vagas}}
                                 </td>
                                 <td>
                                     <a href="{% url 'excluir_empresa' empresa.id %}" class="btn-excluir">Excluir empresa</a>
