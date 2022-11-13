@@ -9,5 +9,8 @@
             "src": "/(.*)",
             "dest": "seletive/wsgi.py"
         }
-    ]
+    ],
+    "env": {
+        "SECRET_KEY": "@SECRET_KEY"
+      }
 }
